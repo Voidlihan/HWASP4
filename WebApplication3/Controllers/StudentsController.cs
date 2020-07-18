@@ -130,19 +130,17 @@ namespace WebApplication3.Controllers
 
         public ActionResult Enroll()
         {
-            var model = new StudentCoursesViewModel();
+            var model = new StudentCourseViewModel();
             ViewBag.Students = db.Students.ToList();
             ViewBag.Courses = db.Courses.ToList();
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Enroll(StudentCoursesViewModel model)
+        public ActionResult Enroll(StudentCourseViewModel model)
         {
             var student = db.Students.Find(model.StudentId);
-
             var course = db.Courses.Find(model.CourseId);
-
             if (student != null && course != null)
             {
                 student.Courses = new List<Course>();
@@ -155,14 +153,14 @@ namespace WebApplication3.Controllers
 
         public ActionResult UnEnroll()
         {
-            var model = new StudentCoursesViewModel();
+            var model = new StudentCourseViewModel();
             ViewBag.Students = db.Students.ToList();
             ViewBag.Courses = db.Courses.ToList();
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult UnEnroll(StudentCoursesViewModel model)
+        public ActionResult UnEnroll(StudentCourseViewModel model)
         {
             var student = db.Students.Include(s => s.Courses).FirstOrDefault(s => s.Id == model.StudentId);
             var course = db.Courses.Find(model.CourseId);
@@ -175,7 +173,6 @@ namespace WebApplication3.Controllers
                 student.Courses.Remove(course);
                 db.SaveChanges();
                 return RedirectToAction("Details", new { id = student.Id });
-
             }
             return View();
         }
